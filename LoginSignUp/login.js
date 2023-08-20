@@ -5,7 +5,53 @@ loginForm.addEventListener("submit", function (event) {
     event.preventDefault();
     const email = document.getElementById("login-email").value;
     const password = document.getElementById("login-password").value;
-    // Add login logic here (e.g., AJAX request to a server)
+    const express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const app = express();
+
+app.use(express.json());
+
+// Mock user data (replace with actual database interaction)
+const users = [
+  { id: 1, username: 'user1', password: '$2b$10$H/wbv9j2aPvYX/BeMT5KXukPbhx/G4/JJZzi7SC8kj3mX9rFTLifS' } // Hashed password: "password"
+];
+
+// Define a secret key for JWT
+const JWT_SECRET = 'your_secret_key_here';
+
+// Define the login endpoint
+app.post('/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    // Find user by username (replace with database query)
+    const user = users.find(user => user.username === username);
+    if (!user) {
+      return res.status(401).json({ message: 'User not found' });
+    }
+
+    // Compare password
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ message: 'Invalid password' });
+    }
+
+    // Generate a JWT token
+    const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
+
+    // Send the token to the frontend
+    res.json({ token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+
 });
 
 signupForm.addEventListener("submit", function (event) {
@@ -13,9 +59,7 @@ signupForm.addEventListener("submit", function (event) {
     const username = document.getElementById("signup-username").value;
     const email = document.getElementById("signup-email").value;
     const password = document.getElementById("signup-password").value;
-    // Add signup logic here (e.g., AJAX request to a server)
-});
-const express = require('express');
+    const express = require('express');
 const bcrypt = require('bcrypt');
 const sqlite3 = require('sqlite3').verbose(); 
 
@@ -53,4 +97,6 @@ app.post('/register', async (req, res) => {
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
+});
+
 });
