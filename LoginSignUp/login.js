@@ -22,7 +22,7 @@ const sqlite3 = require('sqlite3').verbose(); // If using SQLite
 const app = express();
 app.use(express.json());
 
-const db = new sqlite3.Database('your-database.db'); // Connect to your database
+const db = new sqlite3.Database('LoginSignUp/Database/Database.sql'); // Connect to your database
 
 app.post('/register', async (req, res) => {
   try {
