@@ -66,7 +66,7 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 app.use(express.json());
 
-const db = new sqlite3.Database('postgres'); 
+const db = new sqlite3.Database('PostgreSQL 15'); 
 
 app.post('/register', async (req, res) => {
   try {
