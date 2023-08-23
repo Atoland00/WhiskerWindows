@@ -48,8 +48,8 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.listen(1520, () => {
-  console.log('Server is running on port 1520');
+app.listen(5432, () => {
+  console.log('Server is running on port 5432');
 });
 
 });
@@ -66,7 +66,7 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 app.use(express.json());
 
-const db = new sqlite3.Database('Database'); 
+const db = new sqlite3.Database('postgres'); 
 
 app.post('/register', async (req, res) => {
   try {
@@ -95,8 +95,8 @@ app.post('/register', async (req, res) => {
   }
 });
 
-app.listen(1520, () => {
-  console.log('Server is running on port 1520');
+app.listen(5432, () => {
+  console.log('Server is running on port 5432');
 });
 
 });
