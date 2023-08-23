@@ -7,4 +7,9 @@ CREATE TABLE users (
 CREATE TABLE profile (
   profileid INT AUTO_INCREMENT PRIMARY KEY,
   userid INT AUTO_INCREMENT foreign key
-)
+);
+INSERT INTO users (userid, username, email, password)
+VALUES ('1234', 'user123', 'tolandadam00@gmail.com', 'Awesome7');
+
+INSERT INTO profile (profileid, userid)
+VALUES ('atoland00', '1234');
