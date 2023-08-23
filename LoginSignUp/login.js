@@ -48,8 +48,8 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.listen(5023, () => {
-  console.log('Server is running on port 5023');
+app.listen(1520, () => {
+  console.log('Server is running on port 1520');
 });
 
 });
@@ -95,8 +95,8 @@ app.post('/register', async (req, res) => {
   }
 });
 
-app.listen(5023, () => {
-  console.log('Server is running on port 5023');
+app.listen(1520, () => {
+  console.log('Server is running on port 1520');
 });
 
 });
