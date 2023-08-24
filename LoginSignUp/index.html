@@ -21,5 +21,62 @@
             <button type="submit">Sign Up</button>
         </form>
     </div>
-    <script src="login.js"></script> 
+    <script type="module">
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+    
+          const firebaseConfig = {
+            apiKey: "AIzaSyAtDJraFr4RGACQKDiDba_1cJEYuE1oIq0",
+            authDomain: "registration-form-b4564.firebaseapp.com",
+            projectId: "registration-form-b4564",
+            storageBucket: "registration-form-b4564.appspot.com",
+            messagingSenderId: "163747645209",
+            appId: "1:163747645209:web:203fd1e92ab51337bfa788"
+          };
+    
+          // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+    
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+    
+    
+    
+        //listen for submit event//(1)
+        document
+          .getElementById('signup-form')
+          .addEventListener('submit', formSubmit);
+    
+        //Submit form(2)
+        function formSubmit(e) {
+          e.preventDefault();
+          // Get Values from the DOM
+          let name = document.querySelector('#name').value;
+          let email = document.querySelector('#email').value;
+          let password = document.querySelector('#password').value;
+    
+          //send message values(3)
+          sendMessage(name, email, password);
+        }
+    
+        //Send Message to Firebase(4)
+        function sendMessage(name, email, password) {
+          const database = getDatabase();
+    
+          set(ref(database, 'users/' + Math.floor(Math.random() * 10000000)), {
+            name: name,
+            email: email,
+            password: password
+          }).then(() => {
+              //Show Alert Message(5)
+           document.querySelector('.alert').style.display = 'block';
+            //Hide Alert Message After Seven Seconds(6)
+           setTimeout(function () {
+           document.querySelector('.alert').style.display = 'none';
+           }, 7000);
+           document.getElementById('signup-form').reset();
+          }).catch((error) => {
+            alert(error)
+          })
+        }
+      </script>
 </html>
