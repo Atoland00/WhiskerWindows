@@ -10,18 +10,18 @@
 
 <body>
   <div class="container">
-    <form id="login-form">
+    <form id="idform">
       <h2>Login</h2>
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="password" id="password" placeholder="Password" required>
+      <input type="email" id="email" placeholder="email" required>
+      <input type="password" id="password" placeholder="password" required>
       <button type="submit">Login</button>
     </form>
-    <form id="signup-form" action="">
+    <form id="idform" action="">
       <h2>Sign Up</h2>
       <div class="alert">Form Submitted Successfully</div>
-      <input type="text" id="username" placeholder="Username" required>
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="password" id="password" placeholder="Password" required>
+      <input type="text" id="username" placeholder="username" required>
+      <input type="email" id="email" placeholder="email" required>
+      <input type="password" id="password" placeholder="password" required>
       <button type="submit">Sign Up</button>
     </form>
   </div>
@@ -47,27 +47,27 @@
     import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-database.js";
     //listen for submit event//(1)
     document
-      .getElementById('signup-form')
+      .getElementById('idform')
       .addEventListener('submit', formSubmit);
 
     //Submit form(2)
     function formSubmit(e) {
       e.preventDefault();
       // Get Values from the DOM
-      let name = document.querySelector('#name').value;
+      let username = document.querySelector('#username').value;
       let email = document.querySelector('#email').value;
       let password = document.querySelector('#password').value;
 
       //send message values(3)
-      sendMessage(name, email, password);
+      sendMessage(username, email, password);
     }
 
     //Send Message to Firebase(4)
-    function sendMessage(name, email, password) {
+    function sendMessage(username, email, password) {
       const database = getDatabase();
 
       set(ref(database, 'users/' + Math.floor(Math.random() * 10000000)), {
-        name: name,
+        username: username,
         email: email,
         password: password
       }).then(() => {
