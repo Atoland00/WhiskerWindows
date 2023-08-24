@@ -1,82 +1,85 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login / Signup</title>
-    <link rel="stylesheet" href="login.css"> 
-</head>
-<body>
-    <div class="container">
-        <form id="login-form">
-            <h2>Login</h2>
-            <input type="email" id="login-email" placeholder="Email" required>
-            <input type="password" id="login-password" placeholder="Password" required>
-            <button type="submit">Login</button>
-        </form>
-        <form id="signup-form" action= "/signup">
-            <h2>Sign Up</h2>
-            <input type="text" id="signup-username" placeholder="Username" required>
-            <input type="email" id="signup-email" placeholder="Email" required>
-            <input type="password" id="signup-password" placeholder="Password" required>
-            <button type="submit">Sign Up</button>
-        </form>
-    </div>
-    <script type="module">
 
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-    
-          const firebaseConfig = {
-            apiKey: "AIzaSyAtDJraFr4RGACQKDiDba_1cJEYuE1oIq0",
-            authDomain: "registration-form-b4564.firebaseapp.com",
-            projectId: "registration-form-b4564",
-            storageBucket: "registration-form-b4564.appspot.com",
-            messagingSenderId: "163747645209",
-            appId: "1:163747645209:web:203fd1e92ab51337bfa788"
-          };
-    
-          // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-    
-        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
-    
-    
-    
-        //listen for submit event//(1)
-        document
-          .getElementById('signup-form')
-          .addEventListener('submit', formSubmit);
-    
-        //Submit form(2)
-        function formSubmit(e) {
-          e.preventDefault();
-          // Get Values from the DOM
-          let name = document.querySelector('#name').value;
-          let email = document.querySelector('#email').value;
-          let password = document.querySelector('#password').value;
-    
-          //send message values(3)
-          sendMessage(name, email, password);
-        }
-    
-        //Send Message to Firebase(4)
-        function sendMessage(name, email, password) {
-          const database = getDatabase();
-    
-          set(ref(database, 'users/' + Math.floor(Math.random() * 10000000)), {
-            name: name,
-            email: email,
-            password: password
-          }).then(() => {
-              //Show Alert Message(5)
-           document.querySelector('.alert').style.display = 'block';
-            //Hide Alert Message After Seven Seconds(6)
-           setTimeout(function () {
-           document.querySelector('.alert').style.display = 'none';
-           }, 7000);
-           document.getElementById('signup-form').reset();
-          }).catch((error) => {
-            alert(error)
-          })
-        }
-      </script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login / Signup</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+  <div class="container">
+    <form id="login-form">
+      <h2>Login</h2>
+      <input type="email" id="login-email" placeholder="Email" required>
+      <input type="password" id="login-password" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+    <form id="signup-form" action="/signup">
+      <h2>Sign Up</h2>
+      <input type="text" id="signup-username" placeholder="Username" required>
+      <input type="email" id="signup-email" placeholder="Email" required>
+      <input type="password" id="signup-password" placeholder="Password" required>
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-analytics.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBx_0G7p0wlOf5jHfYsIljWf9pAvBTuwwQ",
+      authDomain: "whiskerwindows-8e4f2.firebaseapp.com",
+      databaseURL: "https://whiskerwindows-8e4f2-default-rtdb.firebaseio.com",
+      projectId: "whiskerwindows-8e4f2",
+      storageBucket: "whiskerwindows-8e4f2.appspot.com",
+      messagingSenderId: "224462309733",
+      appId: "1:224462309733:web:f047b64c037d391376398c",
+      measurementId: "G-TJ5WN5JECD"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-database.js";
+    //listen for submit event//(1)
+    document
+      .getElementById('signup-form')
+      .addEventListener('submit', formSubmit);
+
+    //Submit form(2)
+    function formSubmit(e) {
+      e.preventDefault();
+      // Get Values from the DOM
+      let name = document.querySelector('#name').value;
+      let email = document.querySelector('#email').value;
+      let password = document.querySelector('#password').value;
+
+      //send message values(3)
+      sendMessage(name, email, password);
+    }
+
+    //Send Message to Firebase(4)
+    function sendMessage(name, email, password) {
+      const database = getDatabase();
+
+      set(ref(database, 'users/' + Math.floor(Math.random() * 10000000)), {
+        name: name,
+        email: email,
+        password: password
+      }).then(() => {
+        //Show Alert Message(5)
+        document.querySelector('.alert').style.display = 'block';
+        //Hide Alert Message After Seven Seconds(6)
+        setTimeout(function () {
+          document.querySelector('.alert').style.display = 'none';
+        }, 7000);
+        document.getElementById('signup-form').reset();
+      }).catch((error) => {
+        alert(error)
+      })
+    }
+  </script>
+
 </html>
