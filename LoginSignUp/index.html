@@ -29,6 +29,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-analytics.js";
     import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-database.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBx_0G7p0wlOf5jHfYsIljWf9pAvBTuwwQ",
@@ -49,54 +50,88 @@
     document.getElementById('signup-form').addEventListener('submit', signUp);
     document.getElementById('login-form').addEventListener('submit', logIn);
 
-    function signUp(e) {
+    async function signUp(e) {
       e.preventDefault();
 
       let username = document.querySelector('#signup-username').value;
       let email = document.querySelector('#signup-email').value;
       let password = document.querySelector('#signup-password').value;
 
-      createUser(username, email, password);
+      checkIfEmailExists(email, username, password);
     }
-    async function createUser(username, email, password) {
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      showNotification('Signup successful');
-      document.getElementById('signup-form').reset();
-    } catch (error) {
-      alert(error.message);
+
+    async function checkIfEmailExists(email, username, password) {
+      const db = firebase.firestore();
+
+      // Check if the email already exists in the users collection
+      db.collection("users")
+        .where("email", "==", email)
+        .get()
+        .then((querySnapshot) => {
+          if (!querySnapshot.empty) {
+            alert("Email already exists in the database.");
+          } else {
+            createUserWithEmailAndPassword(auth, email, password)
+              .then(() => {
+                createUserInFirestore(username, email);
+              })
+              .catch((error) => {
+                alert(error.message);
+              });
+          }
+        })
+        .catch((error) => {
+          alert(error);
+        });
     }
-  }
 
-  async function logIn(e) {
-    e.preventDefault();
+    function createUserInFirestore(username, email) {
+      const db = firebase.firestore();
 
-    let email = document.querySelector('#login-email').value;
-    let password = document.querySelector('#login-password').value;
-
-    authenticateUser(email, password);
-  }
-
-  async function authenticateUser(email, password) {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      showNotification('Login successful');
-      document.getElementById('login-form').reset();
-    } catch (error) {
-      showNotification('Login failed');
+      // Add the new user data to the users collection
+      db.collection("users")
+        .add({
+          username: username,
+          email: email,
+        })
+        .then(() => {
+          showNotification("Signup successful");
+          document.getElementById("signup-form").reset();
+        })
+        .catch((error) => {
+          alert(error);
+        });
     }
-  }
 
-  function showNotification(message) {
-    const alertElement = document.querySelector('.alert');
-    alertElement.style.display = 'block';
-    alertElement.textContent = message;
+    async function logIn(e) {
+      e.preventDefault();
 
-    setTimeout(function () {
-      alertElement.style.display = 'none';
-      alertElement.textContent = '';
-    }, 7000);
-  }
+      let email = document.querySelector('#login-email').value;
+      let password = document.querySelector('#login-password').value;
+
+      authenticateUser(email, password);
+    }
+
+    async function authenticateUser(email, password) {
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        showNotification('Login successful');
+        document.getElementById('login-form').reset();
+      } catch (error) {
+        showNotification('Login failed');
+      }
+    }
+
+    function showNotification(message) {
+      const alertElement = document.querySelector('.alert');
+      alertElement.style.display = 'block';
+      alertElement.textContent = message;
+
+      setTimeout(function () {
+        alertElement.style.display = 'none';
+        alertElement.textContent = '';
+      }, 7000);
+    }
   </script>
 </body>
 

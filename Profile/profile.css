@@ -1,0 +1,63 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: url(https://c4.wallpaperflare.com/wallpaper/919/111/778/four-kittens-four-main-coon-kittens-wallpaper-preview.jpg) no-repeat center center fixed;
+  background-size: cover;
+}
+
+.container {
+  max-width: 800px;
+  margin: 100px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.profile-pic {
+  max-width: 200px;
+  margin: 20px auto;
+  display: block;
+  border-radius: 50%;
+}
+
+.bio-textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: vertical;
+}
+
+.save-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.profile-preview {
+  margin-top: 30px;
+}
+
+.profile-name {
+  font-size: 24px;
+  margin: 10px 0;
+  color: #333;
+}
+
+.profile-description {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Additional styles for better spacing */
+.container > * {
+  margin-bottom: 20px;
+}
