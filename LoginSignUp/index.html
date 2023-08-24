@@ -10,18 +10,17 @@
 
 <body>
   <div class="container">
-    <form id="login-form">
+    <form id="login-form" action="https://codepen.io/Atolan00/pen/bGQXjJw" method="post">
       <h2>Login</h2>
-      <input type="email" id="email" placeholder="email" required>
-      <input type="password" id="password" placeholder="password" required>
+      <input type="email" id="login-email" placeholder="email" required>
+      <input type="password" id="login-password" placeholder="password" required>
       <button type="submit">Login</button>
     </form>
     <form id="signup-form" action="">
       <h2>Sign Up</h2>
-      <div class="alert">Form Submitted Successfully</div>
-      <input type="text" id="username" placeholder="username" required>
-      <input type="email" id="email" placeholder="email" required>
-      <input type="password" id="password" placeholder="password" required>
+      <input type="text" id="signup-username" placeholder="username" required>
+      <input type="email" id="signup-email" placeholder="email" required>
+      <input type="password" id="signup-password" placeholder="password" required>
       <button type="submit">Sign Up</button>
     </form>
   </div>
@@ -31,7 +30,14 @@
     import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-database.js";
 
     const firebaseConfig = {
-      // Your Firebase configuration
+      apiKey: "AIzaSyBx_0G7p0wlOf5jHfYsIljWf9pAvBTuwwQ",
+      authDomain: "whiskerwindows-8e4f2.firebaseapp.com",
+      databaseURL: "https://whiskerwindows-8e4f2-default-rtdb.firebaseio.com",
+      projectId: "whiskerwindows-8e4f2",
+      storageBucket: "whiskerwindows-8e4f2.appspot.com",
+      messagingSenderId: "224462309733",
+      appId: "1:224462309733:web:f047b64c037d391376398c",
+      measurementId: "G-TJ5WN5JECD"
     };
 
     // Initialize Firebase
