@@ -10,6 +10,7 @@
 
 <body>
   <div class="container">
+    <div class="alert"></div>
     <form id="login-form" action="https://codepen.io/Atolan00/pen/bGQXjJw" method="post">
       <h2>Login</h2>
       <input type="email" id="login-email" placeholder="email" required>
@@ -43,6 +44,7 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
+    const auth = getAuth(app);
 
     document.getElementById('signup-form').addEventListener('submit', signUp);
     document.getElementById('login-form').addEventListener('submit', logIn);
@@ -56,60 +58,45 @@
 
       createUser(username, email, password);
     }
-
-    function createUser(username, email, password) {
-      const database = getDatabase();
-
-      set(ref(database, 'users/' + Math.floor(Math.random() * 10000000)), {
-        username: username,
-        email: email,
-        password: password
-      }).then(() => {
-        showNotification('Signup successful');
-        document.getElementById('signup-form').reset();
-      }).catch((error) => {
-        alert(error);
-      });
+    async function createUser(username, email, password) {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      showNotification('Signup successful');
+      document.getElementById('signup-form').reset();
+    } catch (error) {
+      alert(error.message);
     }
+  }
 
-    function logIn(e) {
-      e.preventDefault();
+  async function logIn(e) {
+    e.preventDefault();
 
-      let email = document.querySelector('#login-email').value;
-      let password = document.querySelector('#login-password').value;
+    let email = document.querySelector('#login-email').value;
+    let password = document.querySelector('#login-password').value;
 
-      authenticateUser(email, password);
+    authenticateUser(email, password);
+  }
+
+  async function authenticateUser(email, password) {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      showNotification('Login successful');
+      document.getElementById('login-form').reset();
+    } catch (error) {
+      showNotification('Login failed');
     }
+  }
 
-    function authenticateUser(email, password) {
-      const database = getDatabase();
-      const usersRef = ref(database, 'users');
+  function showNotification(message) {
+    const alertElement = document.querySelector('.alert');
+    alertElement.style.display = 'block';
+    alertElement.textContent = message;
 
-      get(usersRef).then((snapshot) => {
-        snapshot.forEach((childSnapshot) => {
-          const user = childSnapshot.val();
-          if (user.email === email && user.password === password) {
-            showNotification('Login successful');
-            document.getElementById('login-form').reset();
-            return;
-          }
-        });
-        showNotification('Login failed');
-      }).catch((error) => {
-        alert(error);
-      });
-    }
-
-    function showNotification(message) {
-      const alertElement = document.querySelector('.alert');
-      alertElement.style.display = 'block';
-      alertElement.textContent = message;
-
-      setTimeout(function () {
-        alertElement.style.display = 'none';
-        alertElement.textContent = '';
-      }, 7000);
-    }
+    setTimeout(function () {
+      alertElement.style.display = 'none';
+      alertElement.textContent = '';
+    }, 7000);
+  }
   </script>
 </body>
 
