@@ -99,7 +99,7 @@
       try {
         await signInWithEmailAndPassword(auth, email, password);
         showNotification('Login successful');
-        window.location.href = 'https://github.com/Atoland00/WhiskerWindows/blob/d56ff4d4838a98e1bf0bde71771992fa8dd0f520/Profile/index.html';
+        window.location.href = 'Profile/index.html';
         document.getElementById('login-form').reset();
       } catch (error) {
         showNotification('Login failed');
