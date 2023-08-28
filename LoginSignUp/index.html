@@ -31,47 +31,61 @@
     import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-database.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.3.0/firebase-auth.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBx_0G7p0wlOf5jHfYsIljWf9pAvBTuwwQ",
-  authDomain: "whiskerwindows-8e4f2.firebaseapp.com",
-  databaseURL: "https://whiskerwindows-8e4f2-default-rtdb.firebaseio.com",
-  projectId: "whiskerwindows-8e4f2",
-  storageBucket: "whiskerwindows-8e4f2.appspot.com",
-  messagingSenderId: "224462309733",
-  appId: "1:224462309733:web:f047b64c037d391376398c",
-  measurementId: "G-TJ5WN5JECD"
-};
+    const firebaseConfig = {
+      apiKey: "AIzaSyBx_0G7p0wlOf5jHfYsIljWf9pAvBTuwwQ",
+      authDomain: "whiskerwindows-8e4f2.firebaseapp.com",
+      databaseURL: "https://whiskerwindows-8e4f2-default-rtdb.firebaseio.com",
+      projectId: "whiskerwindows-8e4f2",
+      storageBucket: "whiskerwindows-8e4f2.appspot.com",
+      messagingSenderId: "224462309733",
+      appId: "1:224462309733:web:f047b64c037d391376398c",
+      measurementId: "G-TJ5WN5JECD"
+    };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
     const auth = getAuth(app);
 
     document.getElementById('signup-form').addEventListener('submit', signUp);
     document.getElementById('login-form').addEventListener('submit', logIn);
 
-    function signUp(e) {
+    async function signUp(e) {
       e.preventDefault();
+
       let username = document.querySelector('#signup-username').value;
       let email = document.querySelector('#signup-email').value;
       let password = document.querySelector('#signup-password').value;
+
       createUser(username, email, password);
     }
 
-    function createUser(username, email, password) {
-      const database = getDatabase();
-      set(ref(database, 'users/' + Math.floor(Math.random() * 10000000)), {
-        username: username,
-        email: email,
-        password: password
-      }).then(() => {
-        showNotification('Signup successful');
-        document.getElementById('signup-form').reset();
-      }).catch((error) => {
-        alert(error);
-      });
-    }
+    async function createUser(username, email, password) {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
 
+        // Send verification email
+        sendSignupConfirmationEmail(user)
+        .then(() => {
+          console.log('Signup confirmation email sent.');
+        })
+        .catch((error) => {
+          console.error('Error sending signup confirmation email:', error);
+        });
+
+      showNotification('Signup successful');
+      document.getElementById('signup-form').reset();
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
+  async function sendSignupConfirmationEmail(user) {
+    // Customize the subject and body of the email
+    const emailSubject = "Welcome to our website!";
+    const emailBody = "Thank you for signing up for our website.";
+    }
     async function logIn(e) {
       e.preventDefault();
 
@@ -85,6 +99,7 @@ const analytics = getAnalytics(app);
       try {
         await signInWithEmailAndPassword(auth, email, password);
         showNotification('Login successful');
+        window.location.href = 'Profile/index.html';
         document.getElementById('login-form').reset();
       } catch (error) {
         showNotification('Login failed');
